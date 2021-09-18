@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="单行文本" v-if="name === 'text'">
+      <el-form-item label="单行文本" v-if="type === 'text'">
         <el-input
           class="el"
           placeholder="请输入内容"
           v-model="form.textValue"
         ></el-input>
       </el-form-item>
-      <el-form-item label="多行文本" v-if="name === 'textarea'">
+      <el-form-item label="多行文本" v-if="type === 'textarea'">
         <el-input
           class="el"
           type="textarea"
@@ -16,7 +16,7 @@
           v-model="form.textareaValue"
         ></el-input>
       </el-form-item>
-      <el-form-item label="多选" v-if="name === 'multiSelect'">
+      <el-form-item label="多选" v-if="type === 'multiSelect'">
         <el-select
           multiple
           collapse-tags
@@ -29,7 +29,7 @@
           <el-option label="选项3" value="3"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="下拉列表" v-if="name === 'select'">
+      <el-form-item label="下拉列表" v-if="type === 'select'">
         <el-select
           class="el"
           placeholder="请选择"
@@ -40,14 +40,14 @@
           <el-option label="选项3" value="3"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="日期" v-if="name === 'date'">
+      <el-form-item label="日期" v-if="type === 'date'">
         <el-date-picker
           type="date"
           placeholder="选择日期"
           v-model="form.dateValue"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="时间" v-if="name === 'time'">
+      <el-form-item label="时间" v-if="type === 'time'">
         <el-time-select
           :picker-options="{
             start: '08:30',
@@ -58,23 +58,23 @@
           v-model="form.timeValue"
         ></el-time-select>
       </el-form-item>
-      <el-form-item label="日期时间" v-if="name === 'dateTime'">
+      <el-form-item label="日期时间" v-if="type === 'dateTime'">
         <el-date-picker
           v-model="form.datetimeValue"
           type="datetime"
           placeholder="选择日期时间"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="数值" v-if="name === 'inputNumber'">
+      <el-form-item label="数值" v-if="type === 'inputNumber'">
         <el-input-number
           class="el"
           v-model="form.inputNumValue"
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="图片附件" v-if="name === 'img'">
+      <el-form-item label="图片附件" v-if="type === 'img'">
 
       </el-form-item>
-      <el-form-item label="文档附件" v-if="name === 'file'">
+      <el-form-item label="文档附件" v-if="type === 'file'">
 
       </el-form-item>
     </el-form>
@@ -83,9 +83,9 @@
 
 <script>
 export default {
-  name: "FormItem",
+  type: "FormItem",
   props: {
-    name: {
+    type: {
       type: String
     }
   },

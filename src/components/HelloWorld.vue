@@ -6,15 +6,16 @@
         @change="log"
         :sort=false
         :list="list1"
+        class="draggableBox"
         v-bind="dragOptions"
         :group="{name: 'draggableGroup', pull: 'clone', put: false}"
       >
         <div
-          :key="element.name"
+          :key="element.type"
           v-for="element in list1"
-          class="list-group-item"
+          class="list-group-item2"
         >
-          <FormItem :name="element.name"/>
+          <Nodes :type="element.name"/>
         </div>
       </draggable>
     </div>
@@ -30,9 +31,9 @@
         <div
           class="list-group-item"
           v-for="(element, index) in list2"
-          :key="element.name + index"
+          :key="element.type + index"
         >
-          <FormItem :name="element.name"/>
+          <FormItem :type="element.type"/>
           <i class="el-icon-delete" @click="delItem(index)"/>
         </div>
       </draggable>
@@ -44,12 +45,14 @@
 
 <script>
 import draggable from "vuedraggable";
+import Nodes from "./Nodes";
 import FormItem from './FormItem';
 import RawDisplayer from './RawDisplayer';
 
 export default {
-  name: "HelloWord",
+  type: "HelloWord",
   components: {
+    Nodes,
     draggable,
     FormItem,
     RawDisplayer
@@ -57,24 +60,24 @@ export default {
   data() {
     return {
       list1: [
-        {name: "text", id: 1},
-        {name: "textarea", id: 2},
-        {name: "multiSelect", id: 3},
-        {name: "select", id: 4},
-        {name: "date", id: 5},
-        {name: "time", id: 6},
-        {name: "dateTime", id: 7},
-        {name: "inputNumber", id: 8},
+        {type: "text", name: '单行文本', id: 1},
+        {type: "textarea", name: '多行文本', id: 2},
+        {type: "multiSelect", name: '多选下拉', id: 3},
+        {type: "select", name: '单选下拉', id: 4},
+        {type: "date", name: '日期组件', id: 5},
+        {type: "time", name: '时间组件', id: 6},
+        {type: "dateTime", name: '日期时间', id: 7},
+        {type: "inputNumber", name: '数字组件', id: 8},
       ],
       list2: [
-        {name: "text", id: 11},
-        {name: "textarea", id: 22},
-        {name: "multiSelect", id: 33},
-        {name: "select", id: 44},
-        {name: "date", id: 55},
-        {name: "time", id: 66},
-        {name: "dateTime", id: 77},
-        {name: "inputNumber", id: 88},
+        {type: "text", id: 11},
+        {type: "textarea", id: 22},
+        {type: "multiSelect", id: 33},
+        {type: "select", id: 44},
+        {type: "date", id: 55},
+        {type: "time", id: 66},
+        {type: "dateTime", id: 77},
+        {type: "inputNumber", id: 88},
       ]
     };
   },
@@ -110,9 +113,17 @@ export default {
   margin: 15px;
 }
 
+.draggableBox {
+  display: flex;
+  flex-wrap: wrap;
+  width: 180px;
+  padding: 20px;
+  border: 1px solid #eee;
+}
+
 .list-group-item {
   width: 300px;
-  padding: 5px;
+  padding: 6px;
   border: 1px solid #eee;
   position: relative;
 }
