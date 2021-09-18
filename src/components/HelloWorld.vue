@@ -1,58 +1,131 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="row">
+    <div class="col">
+      <h3>Draggable 1</h3>
+      <draggable
+        @change="log"
+        :sort=false
+        :list="list1"
+        v-bind="dragOptions"
+        :group="{name: 'draggableGroup', pull: 'clone', put: false}"
+      >
+        <div
+          :key="element.name"
+          v-for="element in list1"
+          class="list-group-item"
+        >
+          <FormItem :name="element.name"/>
+        </div>
+      </draggable>
+    </div>
+
+    <div class="col" style="margin-right: 80px">
+      <h3>Draggable 2</h3>
+      <draggable
+        @change="log"
+        :list="list2"
+        v-bind="dragOptions"
+        group="draggableGroup"
+      >
+        <div
+          class="list-group-item"
+          v-for="(element, index) in list2"
+          :key="element.name + index"
+        >
+          <FormItem :name="element.name"/>
+          <i class="el-icon-delete" @click="delItem(index)"/>
+        </div>
+      </draggable>
+    </div>
+    <raw-displayer class="col" :value="list1" title="List1 Data"/>
+    <raw-displayer class="col" :value="list2" title="List2 Data"/>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
-</script>
+import draggable from "vuedraggable";
+import FormItem from './FormItem';
+import RawDisplayer from './RawDisplayer';
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+export default {
+  name: "HelloWord",
+  components: {
+    draggable,
+    FormItem,
+    RawDisplayer
+  },
+  data() {
+    return {
+      list1: [
+        {name: "text", id: 1},
+        {name: "textarea", id: 2},
+        {name: "multiSelect", id: 3},
+        {name: "select", id: 4},
+        {name: "date", id: 5},
+        {name: "time", id: 6},
+        {name: "dateTime", id: 7},
+        {name: "inputNumber", id: 8},
+      ],
+      list2: [
+        {name: "text", id: 11},
+        {name: "textarea", id: 22},
+        {name: "multiSelect", id: 33},
+        {name: "select", id: 44},
+        {name: "date", id: 55},
+        {name: "time", id: 66},
+        {name: "dateTime", id: 77},
+        {name: "inputNumber", id: 88},
+      ]
+    };
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 500,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
+  },
+  methods: {
+    log: function (evt) {
+      window.console.log(evt);
+    },
+    delItem(index) {
+      let newList = this.list2;
+      newList.splice(index, 1);
+      this.list2 = newList;
+    }
+  }
+};
+</script>
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.row {
+  display: flex;
+  flex-flow: row;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.col {
+  margin: 15px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.list-group-item {
+  width: 300px;
+  padding: 5px;
+  border: 1px solid #eee;
+  position: relative;
 }
-a {
-  color: #42b983;
+
+.el-icon-delete {
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  cursor: pointer;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
 }
 </style>
